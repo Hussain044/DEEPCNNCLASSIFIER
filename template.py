@@ -15,6 +15,9 @@ list_of_files = [
     f"src/{package_name}/utils/__init__.py",
     f"src/{package_name}/constants/__init__.py",
     f"src/{package_name}/pipeline/__init__.py",
+    "tests/__init__.py",
+    "tests/unit/__init__.py",  # A unit test is used for a specific created component
+    "tests/integration/__init__.py",  # check the pipeline by merging to two components
     "configs/config.yaml",
     "dvc.yaml",
     "params.yaml",
