@@ -13,7 +13,7 @@ class DataIngestion:
     def __init__(self, config=DataIngestionConfig):
         self.config = config
 
-    def download_file(self) -> str:
+    def download_file(self):
         logger.info("Atempting to download file...")
         if not os.path.exists(self.config.local_data_file):
             logger.info("Download started...")
