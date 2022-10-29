@@ -130,3 +130,7 @@ dmypy.json
 
 #vscode
 .vscode
+
+*.jpg
+*.zip
+deepClassifier.egg-info/
