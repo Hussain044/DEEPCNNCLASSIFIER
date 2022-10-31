@@ -2,6 +2,7 @@ from deepClassifier.utils.common import create_directories
 from deepClassifier.constants import *
 from deepClassifier.utils import read_yaml
 from deepClassifier.entity.config_entity import *
+import os
 
 
 class ConfigurationManager:
@@ -39,3 +40,34 @@ class ConfigurationManager:
             params_classes=self.params.CLASSES
         )
         return prepare_base_model_config
+
+    def get_prepare_callbacks_config(self)->PrepareCallbacksConfig:
+        config = self.config.prepare_callbacks
+        model_ckpt_dir = os.path.dirname(config.checkpoint_model_filepath)
+        create_directories([
+            Path(model_ckpt_dir),
+            Path(config.tensorboard_root_log_dir)
+        ])
+        prepare_callbacks_config = PrepareCallbacksConfig(
+            root_dir=Path(config.root_dir),
+            tensorboard_root_log_dir=Path(config.tensorboard_root_log_dir),
+            checkpoint_model_filepath=Path(config.checkpoint_model_filepath)
+        )
+        return prepare_callbacks_config
+
+    def get_training_config(self)->TrainingConfig:
+        training=self.config.training
+        prepare_base_model=self.config.prepare_base_model
+        training_data = os.path.join(self.config.data_ingestion.unzip_dir,"PetImages")
+        training_config = TrainingConfig(
+            root_dir=training.root_dir,
+            trained_model_path=training.trained_model_path,
+            updated_base_model_path=prepare_base_model.updated_base_model_path,
+            training_data=training_data,
+            params_epochs=self.params.EPOCHS,
+            params_batch_size=self.params.BATCH_SIZE,
+            params_is_augmentation=self.params.AUGMENTATION,
+            params_image_size=self.params.IMAGE_SIZE
+        )
+        return training_config
+
