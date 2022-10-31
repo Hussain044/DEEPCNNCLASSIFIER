@@ -134,3 +134,4 @@ dmypy.json
 *.jpg
 *.zip
 deepClassifier.egg-info/
+artifacts/
