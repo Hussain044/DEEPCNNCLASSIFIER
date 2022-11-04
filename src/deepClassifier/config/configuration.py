@@ -1,4 +1,4 @@
-from deepClassifier.utils.common import create_directories
+from deepClassifier.utils.common import create_directories, save_json
 from deepClassifier.constants import *
 from deepClassifier.utils import read_yaml
 from deepClassifier.entity.config_entity import *
@@ -41,7 +41,7 @@ class ConfigurationManager:
         )
         return prepare_base_model_config
 
-    def get_prepare_callbacks_config(self)->PrepareCallbacksConfig:
+    def get_prepare_callbacks_config(self) -> PrepareCallbacksConfig:
         config = self.config.prepare_callbacks
         model_ckpt_dir = os.path.dirname(config.checkpoint_model_filepath)
         create_directories([
@@ -55,10 +55,11 @@ class ConfigurationManager:
         )
         return prepare_callbacks_config
 
-    def get_training_config(self)->TrainingConfig:
-        training=self.config.training
-        prepare_base_model=self.config.prepare_base_model
-        training_data = os.path.join(self.config.data_ingestion.unzip_dir,"PetImages")
+    def get_training_config(self) -> TrainingConfig:
+        training = self.config.training
+        prepare_base_model = self.config.prepare_base_model
+        training_data = os.path.join(
+            self.config.data_ingestion.unzip_dir, "PetImages")
         training_config = TrainingConfig(
             root_dir=training.root_dir,
             trained_model_path=training.trained_model_path,
@@ -71,3 +72,12 @@ class ConfigurationManager:
         )
         return training_config
 
+    def get_validation_config(self) -> EvaluationConfig:
+
+        evaluation_config = EvaluationConfig(
+            path_of_model=self.config.training.trained_model_path,
+            training_data=self.config.data_ingestion.unzip_dir,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+        return evaluation_config
