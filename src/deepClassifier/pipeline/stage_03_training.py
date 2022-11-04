@@ -1,8 +1,11 @@
 from deepClassifier.config import ConfigurationManager
 from deepClassifier.entity.config_entity import PrepareCallbacksConfig, TrainingConfig
 from deepClassifier.components import PrepareCallbacks, Training
+from deepClassifier import logger
 
-try:
+STAGE_NAME = "TRAINING"
+
+def main():
     config = ConfigurationManager()
     prepare_callbacks_config = config.get_prepare_callbacks_config()
     prepare_callbacks = PrepareCallbacks(config=prepare_callbacks_config)
@@ -15,5 +18,13 @@ try:
     training.train(
         callbacks_list=callback_list
     ) 
-except Exception as e:
-    raise e
+
+
+if __name__ == '__main__':
+    try:
+        logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
+        main()
+        logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+    except Exception as e:
+        logger.exception(e)
+        raise e
