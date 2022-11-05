@@ -19,10 +19,10 @@ class ConfigurationManager:
         config = self.config.data_ingestion
         create_directories([config.root_dir])
         data_ingestion_config = DataIngestionConfig(
-            root_dir=config.root_dir,
+            root_dir=Path(config.root_dir),
             source_URL=config.source_URL,
-            local_data_file=config.local_data_file,
-            unzip_dir=config.unzip_dir
+            local_data_file=Path(config.local_data_file),
+            unzip_dir=Path(config.unzip_dir)
         )
         return data_ingestion_config
 
@@ -61,9 +61,10 @@ class ConfigurationManager:
         training_data = os.path.join(
             self.config.data_ingestion.unzip_dir, "PetImages")
         training_config = TrainingConfig(
-            root_dir=training.root_dir,
-            trained_model_path=training.trained_model_path,
-            updated_base_model_path=prepare_base_model.updated_base_model_path,
+            root_dir=Path(training.root_dir),
+            trained_model_path=Path(training.trained_model_path),
+            updated_base_model_path=Path(
+                prepare_base_model.updated_base_model_path),
             training_data=training_data,
             params_epochs=self.params.EPOCHS,
             params_batch_size=self.params.BATCH_SIZE,
@@ -75,8 +76,8 @@ class ConfigurationManager:
     def get_validation_config(self) -> EvaluationConfig:
 
         evaluation_config = EvaluationConfig(
-            path_of_model=self.config.training.trained_model_path,
-            training_data=self.config.data_ingestion.unzip_dir,
+            path_of_model=Path(self.config.training.trained_model_path),
+            training_data=Path(self.config.data_ingestion.unzip_dir),
             params_image_size=self.params.IMAGE_SIZE,
             params_batch_size=self.params.BATCH_SIZE
         )
